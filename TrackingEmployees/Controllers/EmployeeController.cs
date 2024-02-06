@@ -12,7 +12,6 @@ namespace TrackingEmployees.Controllers
             _employeeService = employeeService;
 
         }
-
         public async Task<IActionResult> Index()
         {
             try

@@ -3,7 +3,7 @@ using TrackingEmployees.Models;
 
 namespace TrackingEmployees.Repository
 {
-    public class EmployeeApiService:IEmployeeService
+    public class EmployeeApiService : IEmployeeService
     {
         private readonly HttpClient _httpClient;
         public EmployeeApiService(HttpClient httpClient)
@@ -11,7 +11,7 @@ namespace TrackingEmployees.Repository
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
         public async Task<IEnumerable<EmployeeViewModel>> GetEmployeesAsync()
-        
+
         {
             // HTTP client
             var apiUrl = "https://rc-vault-fap-live-1.azurewebsites.net/api/gettimeentries?code=vO17RnE8vuzXzPJo5eaLLjXjmRW07law99QTD90zat9FfOQJKKUcgQ==";
@@ -35,10 +35,8 @@ namespace TrackingEmployees.Repository
                 viewModel.TotalHours = (int)Math.Round(viewModel.TotalHours);
                 return viewModel;
             });
-      
-
             return groupedEmployeesWithHours;
-            
+
         }
     }
 }

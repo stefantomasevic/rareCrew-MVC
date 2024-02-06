@@ -1,14 +1,16 @@
 ﻿@model IEnumerable<TrackingEmployees.Models.EmployeeViewModel>
+@using Newtonsoft.Json
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
+<head runat="server">
+    <title></title>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
-@* <p>
-    <a asp-action="Create">Create New</a>
-</p> *@
+</head>
 <table class="table">
     <thead>
         <tr>
@@ -18,19 +20,53 @@
             <th>
                 @Html.DisplayNameFor(model => model.TotalHours)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr style="background-color: @(item.TotalHours < 100 ? "red" : "white")">
-            <td>
-                @Html.DisplayFor(modelItem => item.EmployeeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalHours)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr style="background-color: @(item.TotalHours < 100 ? "red" : "white")">
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalHours)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<div class="row">
+    <form id="form1" runat="server">
+        <div id="employeecharts" style="width: 1200px; height: 600px;"></div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    var model = @Html.Raw(JsonConvert.SerializeObject(Model));
+    google.load("visualization", "1", { packages: ["corechart"], callback: employeePieChart });
+    function employeePieChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Employee');
+        data.addColumn('number', 'Hours');
+
+        model.forEach(function (employee) {
+            data.addRow([employee.EmployeeName, employee.TotalHours]);
+        });
+
+        var options = {
+            title: 'Hours per month'
+        };
+
+        var employeecharts = new google.visualization.PieChart(document.getElementById('employeecharts'));
+        employeecharts.draw(data, options);
+    }
+</script>
+
+
+
+
+
+

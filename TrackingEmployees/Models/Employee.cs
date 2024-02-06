@@ -11,5 +11,6 @@
         public DateTimeOffset EndTimeUtc { get; set; }
 
         public string EntryNotes { get; set; }
+     
     }
 }
